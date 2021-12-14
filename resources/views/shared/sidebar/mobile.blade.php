@@ -79,6 +79,13 @@
           </x-jet-responsive-nav-link>
         @endif
 
+        @if (auth()->user()->hasPermissionTo('policy-and-procedures'))
+          <x-jet-responsive-nav-link href="{{ route('policy.index') }}"
+          :active="request()->routeIs('policy.index')" icon="heroicon-o-shield-exclamation">
+          Complaints
+          </x-jet-responsive-nav-link>
+        @endif
+
         @if (auth()->user()->hasPermissionTo('claims'))
           <x-jet-responsive-nav-link href="{{ route('claims.index') }}"
             :active="request()->routeIs('claims.index')" icon="heroicon-o-clipboard-list">

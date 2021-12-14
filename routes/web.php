@@ -4,6 +4,7 @@ use App\Http\Controllers\AdviserController;
 use App\Http\Controllers\CirController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\IrController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\SiteHistoryController;
@@ -34,6 +35,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::resource('complaints', ComplaintController::class)->only([
         'index',
     ])->middleware(['permission:complaints']);
+
+    Route::resource('policy', PolicyController::class)->only([
+        'index',
+    ]);
 
     Route::resource('claims', ClaimController::class)->only([
         'index',
@@ -83,6 +88,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
             Route::get('/{complaint}', [ComplaintController::class, 'pdf'])->name('pdf')->middleware(['permission:complaints.view-pdf']);
         });
 
+        Route::group(['as' => 'policy.', 'prefix' => 'policy'], function () {
+            Route::get('/', [PolicyController::class, 'report'])->name('index')->middleware(['permission:policy.generate-report']);
+            Route::get('/{policy}', [PolicyController::class, 'pdf'])->name('pdf')->middleware(['permission:policy.view-pdf']);
+        });
+        
         Route::group(['as' => 'claims.', 'prefix' => 'claims'], function () {
             Route::get('/', [ClaimController::class, 'report'])->name('index')->middleware(['permission:claims.generate-report']);
             Route::get('/{claim}', [ClaimController::class, 'pdf'])->name('pdf')->middleware(['permission:claims.view-pdf']);

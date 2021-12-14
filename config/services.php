@@ -65,6 +65,7 @@ return [
         ],
         'cir' => [],
         'ir' => [],
+        'policy-and-procedures' => [],
         'vulnerable-clients' => [
             'create' => 'Register',
             'update' => 'Update',
@@ -405,6 +406,10 @@ return [
 
     'cir' => [
         'url' => env('CIR_URL'),
+    ],
+
+    'pap' => [
+        'url' => env('PAP_URL'),
     ],
 
     'vulnerableClients' => [

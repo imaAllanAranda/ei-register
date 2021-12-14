@@ -24,6 +24,14 @@
             </x-jet-nav-link>
           @endif
 
+          @if (auth()->user()->hasPermissionTo('policy-and-procedures'))
+            <x-jet-nav-link href="{{ route('policy.index') }}"
+            :active="request()->routeIs('policy.index')"
+            icon="heroicon-o-clipboard-list">
+            Policy and Procedures
+          </x-jet-nav-link>
+          @endif
+
           @if (auth()->user()->hasPermissionTo('claims'))
             <x-jet-nav-link href="{{ route('claims.index') }}"
               :active="request()->routeIs('claims.index')"
