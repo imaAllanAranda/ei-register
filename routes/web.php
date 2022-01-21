@@ -5,6 +5,8 @@ use App\Http\Controllers\CirController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\PolicyController;
+use App\Http\Controllers\MeritController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\IrController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\SiteHistoryController;
@@ -24,6 +26,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
+Route::get('/clear-cache', function() {
+    Artisan::call('cache:clear');
+    return "Cache is cleared";
+});
 
 Route::redirect('/', 'dashboard');
 
@@ -36,7 +42,16 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         'index',
     ])->middleware(['permission:complaints']);
 
+
     Route::resource('policy', PolicyController::class)->only([
+        'index',
+    ]);
+
+    Route::resource('merits', MeritController::class)->only([
+        'index',
+    ]);
+
+    Route::resource('attendance', AttendanceController::class)->only([
         'index',
     ]);
 
@@ -92,7 +107,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
             Route::get('/', [PolicyController::class, 'report'])->name('index')->middleware(['permission:policy.generate-report']);
             Route::get('/{policy}', [PolicyController::class, 'pdf'])->name('pdf')->middleware(['permission:policy.view-pdf']);
         });
-        
+
         Route::group(['as' => 'claims.', 'prefix' => 'claims'], function () {
             Route::get('/', [ClaimController::class, 'report'])->name('index')->middleware(['permission:claims.generate-report']);
             Route::get('/{claim}', [ClaimController::class, 'pdf'])->name('pdf')->middleware(['permission:claims.view-pdf']);

@@ -16,107 +16,139 @@
             Dashboard
           </x-jet-nav-link>
 
-          @if (auth()->user()->hasPermissionTo('complaints'))
-            <x-jet-nav-link href="{{ route('complaints.index') }}"
-              :active="request()->routeIs('complaints.index')"
-              icon="heroicon-o-shield-exclamation">
-              Complaints
-            </x-jet-nav-link>
-          @endif
 
-          @if (auth()->user()->hasPermissionTo('policy-and-procedures'))
-            <x-jet-nav-link href="{{ route('policy.index') }}"
-            :active="request()->routeIs('policy.index')"
-            icon="heroicon-o-clipboard-list">
-            Policy and Procedures
-          </x-jet-nav-link>
-          @endif
 
-          @if (auth()->user()->hasPermissionTo('claims'))
-            <x-jet-nav-link href="{{ route('claims.index') }}"
-              :active="request()->routeIs('claims.index')"
-              icon="heroicon-o-clipboard-list">
-              Claims
-            </x-jet-nav-link>
-          @endif
-
-          @if (auth()->user()->hasPermissionTo('cir'))
-            <x-jet-nav-link href="{{ route('cir.login') }}"
-              :active="false"
-              icon="heroicon-o-document-report"
-              target="_blank">
-              CIR
-            </x-jet-nav-link>
-          @endif
-
-          @if (auth()->user()->hasPermissionTo('ir'))
-            <x-jet-nav-link href="{{ route('ir.login') }}"
-              :active="false"
-              icon="heroicon-o-document-report"
-              target="_blank">
-              IR
-            </x-jet-nav-link>
-          @endif
-
-          @if (auth()->user()->hasPermissionTo('vulnerable-clients'))
-            <x-jet-nav-link href="{{ route('vulnerable-clients.index') }}" :active="request()->routeIs('vulnerable-clients.index')" icon="heroicon-o-exclamation">
-              Vulnerable Clients
-            </x-jet-nav-link>
-          @endif
-
-          @if (auth()->user()->hasPermissionTo('software'))
-            <x-jet-nav-link href="{{ route('sites.index') }}"
-              :active="request()->routeIs('sites.index')"
-              icon="heroicon-o-globe">
-              Software
-            </x-jet-nav-link>
-          @endif
+          <div class="relative" style="margin: 10px">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
 
           @if (auth()->user()->hasPermissionTo('advisers'))
-            <x-jet-nav-link href="{{ route('advisers.index') }}"
-              :active="request()->routeIs('advisers.index')"
-              icon="heroicon-o-users">
-              Advisers / Staffs
-            </x-jet-nav-link>
-          @endif
+          <x-jet-nav-link href="{{ route('advisers.index') }}"
+          :active="request()->routeIs('advisers.index')"
+          icon="heroicon-o-users">
+          Advisers / Staffs
+        </x-jet-nav-link>
+        @endif
 
-          @if (auth()->user()->hasPermissionTo('users'))
-            <x-jet-nav-link href="{{ route('users.index') }}"
-              :active="request()->routeIs('users.index')"
-              icon="heroicon-o-user-circle">
-              Users
-            </x-jet-nav-link>
-          @endif
+        @if (auth()->user()->hasPermissionTo('attendance'))
+        <x-jet-nav-link href="{{ route('attendance.index') }}"
+        :active="false"
+        icon="heroicon-o-user">
+        Attendance
+      </x-jet-nav-link>
+      @endif
 
-          <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <x-jet-nav-link href="{{ route('logout') }}" :active="false" icon="heroicon-o-logout"
-              onclick="event.preventDefault(); this.closest('form').submit();">
-              Log Out
-            </x-jet-nav-link>
-          </form>
-        </nav>
+      @if (auth()->user()->hasPermissionTo('cir'))
+      <x-jet-nav-link href="{{ route('cir.login') }}"
+      :active="false"
+      icon="heroicon-o-document-report"
+      target="_blank">
+      CIR
+    </x-jet-nav-link>
+    @endif
 
+    @if (auth()->user()->hasPermissionTo('claims'))
+    <x-jet-nav-link href="{{ route('claims.index') }}"
+    :active="request()->routeIs('claims.index')"
+    icon="heroicon-o-clipboard-list">
+    Claims
+  </x-jet-nav-link>
+  @endif
+
+  @if (auth()->user()->hasPermissionTo('complaints'))
+  <x-jet-nav-link href="{{ route('complaints.index') }}"
+  :active="request()->routeIs('complaints.index')"
+  icon="heroicon-o-shield-exclamation">
+  Complaints
+</x-jet-nav-link>
+@endif
+
+
+@if (auth()->user()->hasPermissionTo('ir'))
+<x-jet-nav-link href="{{ route('ir.login') }}"
+:active="false"
+icon="heroicon-o-document-report"
+target="_blank">
+Incident Reports
+</x-jet-nav-link>
+@endif
+
+
+@if (auth()->user()->hasPermissionTo('merits'))
+<x-jet-nav-link href="{{ route('merits.index') }}"
+:active="false"
+icon="heroicon-o-star">
+Merits
+</x-jet-nav-link>
+@endif
+
+@if (auth()->user()->hasPermissionTo('policy-and-procedures'))
+<x-jet-nav-link href="{{ route('policy.index') }}"
+:active="request()->routeIs('policy.index')"
+icon="heroicon-o-clipboard-list">
+Policies and Procedures
+</x-jet-nav-link>
+@endif
+
+
+@if (auth()->user()->hasPermissionTo('software'))
+<x-jet-nav-link href="{{ route('sites.index') }}"
+:active="request()->routeIs('sites.index')"
+icon="heroicon-o-globe">
+Software
+</x-jet-nav-link>
+@endif
+
+
+@if (auth()->user()->hasPermissionTo('users'))
+<x-jet-nav-link href="{{ route('users.index') }}"
+:active="request()->routeIs('users.index')"
+icon="heroicon-o-user-circle">
+Users
+</x-jet-nav-link>
+@endif
+
+@if (auth()->user()->hasPermissionTo('vulnerable-clients'))
+<x-jet-nav-link href="{{ route('vulnerable-clients.index') }}" :active="request()->routeIs('vulnerable-clients.index')" icon="heroicon-o-exclamation">
+  Vulnerable Clients
+</x-jet-nav-link>
+@endif
+
+
+
+<div class="relative" style="margin: 10px">
+  <div class="w-full border-t border-gray-300"></div>
+</div>
+
+<form method="POST" action="{{ route('logout') }}">
+  @csrf
+  <x-jet-nav-link href="{{ route('logout') }}" :active="false" icon="heroicon-o-logout"
+  onclick="event.preventDefault(); this.closest('form').submit();">
+  Log Out
+</x-jet-nav-link>
+</form>
+</nav>
+
+</div>
+<div class="flex-shrink-0 flex flex-col border-t border-gray-200">
+  <a href="{{ route('profile.show') }}" class="flex-shrink-0 w-full group block p-4">
+    <div class="flex items-center">
+      <div>
+        <img class="inline-block h-9 w-9 rounded-full"
+        src="{{ Auth::user()->profile_photo_url }}"
+        alt="{{ Auth::user()->name }}">
       </div>
-      <div class="flex-shrink-0 flex flex-col border-t border-gray-200">
-        <a href="{{ route('profile.show') }}" class="flex-shrink-0 w-full group block p-4">
-          <div class="flex items-center">
-            <div>
-              <img class="inline-block h-9 w-9 rounded-full"
-                src="{{ Auth::user()->profile_photo_url }}"
-                alt="{{ Auth::user()->name }}">
-            </div>
-            <div class="ml-3">
-              <p class="text-sm font-medium text-dsgreen group-hover:text-lmara">
-                {{ Auth::user()->name }}
-              </p>
-              <p class="text-xs font-medium text-shark group-hover:text-tblue">
-                View profile
-              </p>
-            </div>
-          </div>
-        </a>
+      <div class="ml-3">
+        <p class="text-sm font-medium text-dsgreen group-hover:text-lmara">
+          {{ Auth::user()->name }}
+        </p>
+        <p class="text-xs font-medium text-shark group-hover:text-tblue">
+          View profile
+        </p>
       </div>
     </div>
-  </div>
+  </a>
+</div>
+</div>
+</div>
 </div>

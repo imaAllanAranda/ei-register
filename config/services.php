@@ -64,7 +64,9 @@ return [
             'delete' => 'Delete',
         ],
         'cir' => [],
-        'ir' => [],
+        'ir' => [],  
+        'merits' => [],
+        'attendance' => [],
         'policy-and-procedures' => [],
         'vulnerable-clients' => [
             'create' => 'Register',
@@ -410,6 +412,14 @@ return [
 
     'pap' => [
         'url' => env('PAP_URL'),
+    ],
+
+    'merit' => [
+        'url' => env('MERIT_URL'),
+    ],
+
+    'attendance' => [
+        'url' => env('ATTENDANCE_URL'),
     ],
 
     'vulnerableClients' => [
