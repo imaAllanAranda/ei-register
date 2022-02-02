@@ -98,7 +98,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         'index',
     ])->middleware(['permission:advisers']);
 
-
+    Route::controller(MemoController::class)->group(function () {
+        // Route::get('/orders/{id}', 'show');
+        Route::post('/signature', 'testsignature');
+    });
 
 
     Route::post('/getmsg', [MemoController::class, 'submitmemo']);

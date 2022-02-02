@@ -74,6 +74,20 @@ Incident Reports
 @endif
 
 
+
+@if (auth()->user()->hasPermissionTo('memos'))
+<x-jet-nav-link href="{{ route('memos.index') }}"
+:active="request()->routeIs('memos.index')"
+icon="heroicon-o-receipt-tax">
+Memo
+</x-jet-nav-link>
+@endif
+
+
+
+
+
+
 @if (auth()->user()->hasPermissionTo('merits'))
 <x-jet-nav-link href="{{ route('merits.index') }}"
 :active="false"
