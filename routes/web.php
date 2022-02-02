@@ -44,6 +44,12 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     ])->middleware(['permission:complaints']);
 
 
+    Route::resource('memos', MemoController::class)->only([
+        'index',
+    ])->middleware(['permission:memos']);
+
+
+    
     Route::resource('policy', PolicyController::class)->only([
         'index',
     ]);
@@ -55,6 +61,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::resource('attendance', AttendanceController::class)->only([
         'index',
     ]);
+
+
+
 
     Route::resource('claims', ClaimController::class)->only([
         'index',
