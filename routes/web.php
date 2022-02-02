@@ -8,6 +8,7 @@ use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\MeritController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\IrController;
+use App\Http\Controllers\MemoController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\SiteHistoryController;
 use App\Http\Controllers\SiteManualController;
@@ -97,6 +98,20 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         'index',
     ])->middleware(['permission:advisers']);
 
+
+
+
+    Route::post('/getmsg', [MemoController::class, 'submitmemo']);
+    Route::post('/updategetmsg', [MemoController::class, 'memoupdate']);
+
+
+
+
+
+
+
+
+
     Route::group(['as' => 'reports.', 'prefix' => 'reports'], function () {
         Route::group(['as' => 'complaints.', 'prefix' => 'complaints'], function () {
             Route::get('/', [ComplaintController::class, 'report'])->name('index')->middleware(['permission:complaints.generate-report']);
@@ -124,6 +139,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
         Route::group(['as' => 'advisers.', 'prefix' => 'advisers'], function () {
             Route::get('/{adviser}', [AdviserController::class, 'pdf'])->name('pdf')->middleware(['permission:advisers.view-pdf']);
+        });
+
+
+        Route::group(['as' => 'memos.', 'prefix' => 'memos'], function () {
+            Route::get('/{memo}', [MemoController::class, 'pdf'])->name('pdf')->middleware(['permission:memos.view-pdf']);
         });
     });
 
