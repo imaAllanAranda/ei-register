@@ -5,9 +5,12 @@
   <style type="text/css">
     pre {font-family: Trebuchet MS, sans-serif
     }
+
     @page{
-      margin-left: 50px;
+      margin-left: 120px;
       margin-right: 50px;
+      header: page-header;
+      footer: page-footer;
     }
     .response{
       text-align: justify;
@@ -16,6 +19,10 @@
     #title{
       text-align: center;
     }
+    p{
+      font-size: 13px;
+    }
+ 
   </style>
 </head>
 <body style="font-family: Trebuchet MS, sans-serif	">
@@ -35,11 +42,6 @@
       <img src="{{ url('images/elitelogo.png') }}" alt="eliteinsure" class="logo" width="100"/>
     </div>
 
-
-    <div style="position:absolute;top:0.26in;right:50.90n;width:150px;line-height:0.27in;">
-      <p>{{ $memo->memo_num }}</p>
-    </div>
-
     <div style="position:absolute;top:0.26in;left:7.4in;width:90px;line-height:0.27in; background-color: #1881c7;height:70px;">
 
       <span style="background-colro:red"></span><br><br><br>
@@ -47,119 +49,71 @@
     </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="row">&nbsp;
-      <br />
-      <br />
+    <div style="position:absolute;top:1.26in;left:1.2in;width:190px;line-height:0.27in;">
       <p>
         <?php
         $orig_date =  explode('-', $memo->memo_date);
         $con_date = $orig_date[0].'-'.$orig_date[1].'-'.$orig_date[2];
-        echo date("jS M, Y", strtotime($con_date));
+        echo date("jS F Y", strtotime($con_date));
         ?>
       </p>
-
-
-
-
-      <br />
-      <br />
-
-      <strong>{{ $memo->recipient }}</strong>
-      <br />
-      <label for="">{{ $memo->recipient_company }}</label>
-      <br />
-      <label for="">{{ $memo->recipient_address }}</label>
-      <br />
-      <br />
-      <br />
-      <label for="">Dear Team,</label>
-      <br />
-      <br />
-      <div style="text-align: center;"><label id="title" class="title" style=""><strong>{{ $memo->subject }}</strong></label></div>
-      <hr>
-      {{-- <hr style="margin-right: 10%"> --}}
-      <br />
-      <br />
-      <br />
-      <label for="">{{ $memo->content }}</label>
-
-      <br />
-      <br />
-      <label for="">You will receive an invoice from us in regards to this.</label>
-      <br/><br/>
-      <label for="">Regards,</label>
-      <br/>
-      <img src="{{ $memo->signature_of_writer }}" alt="" height="50">
-
-
-
-
-
-
-
-
     </div>
 
-
-
-
-
-    <div style="position:absolute;top:7.40in;left:0.55in;width:150px;line-height:0.27in;">
-      <label for="" >{{ $memo->name_of_writer }}</label>
+     <div id="recipient" style="position:absolute;top:1.90in;left:1.2in;width:200px;line-height:0.17in;">
+      <p>
+        <strong>{{ $memo->recipient }}</strong>
+      </p>
+      <p>{{ $memo->recipient_company }}</p>
+      <p>{{ $memo->recipient_address }}</p>
     </div>
 
-    <div style="position:absolute;top:7.60in;left:0.71in;width:150px;line-height:0.27in;">
-      <label for="">{{ $memo->position_of_writer }}</label>
+    <div style="position:absolute;top:3.20in;left:1.2in;width:200px;line-height:0.17in;">
+      <p>Dear Team,</p>
+    </div>
+    <br><br>
+    <br><br>
+    <br><br>
+    <br><br>
+    <br><br>
+    <br><br>
+    <br><br>
+    <div style="text-align: center;"><p style="font-family: calibri; color:#3b76d4; font-size: 17px;letter-spacing: .5px;
+">{{ $memo->subject }}</p>
+    </div>
+<!-- 
+    <div style="position:absolute;top:3.5in;padding-left: 50px"><p style="font-family: calibri; color:#3b76d4; font-size: 17px;letter-spacing: .5px;
+">{{ $memo->subject }}</p>
+    </div> -->
+    
+    <div style="position:absolute;top:3.78in;left:1.2in;width:600px;line-height:0.17in;">
+        <hr style="color:#3b76d4;">
     </div>
 
-    <div style="position:absolute;top:10.50in;left:0.71in;width:150px;line-height:0.27in;">
-      <img src="{{ url('images/logo.png') }}" alt="" height="50">
+    <div style="position:absolute;top:4.28in;left:1.2in;width:600px;line-height:0.17in;">
+    <p>{!! $memo->content !!}</p>
+
+    <br><br><br>
+    <p style="font-size: 13px;">Regards,</p>
+      <div style="padding-top: -30px;"><img src="{{ $memo->signature_of_writer }}" alt="" height="70" width="100" ></div>
+      <div style="padding-top: -30px;"><p style="font-size: 13px;" >{{ $memo->name_of_writer }}</p></div>
+      <div style="text-align: center; width:120px; padding-top: -10px;"><hr style="  border-top: 1px dotted black;"></div>
+      <div style="text-align: center; width:120px; padding-top: -20px;"><p style="font-size: 13px;">{{ $memo->position_of_writer }}</p></div>
     </div>
-    {{-- <footer class="footer" name="page-footer">
-      <table class="table-footer">
-        <tr>
-          <td colspan="2" class="text-sm text-justify" style="padding-left: 0.5in; padding-right: 0.5in;">
-            Disclaimer: Eliteinsure has used reasonable endeavours to ensure the accuracy and completeness of
-            the information provided but makes no warranties as to the accuracy or completeness of such
-            information. The information should not be taken as advice. Eliteinsure accepts no responsibility
-            for the results of any omissions or actions taken on basis of this information. This report includes
-            commercially sensitive information. Accordingly, it may be used for the purpose provided; may not be
-            disclosed to any third party; and will be subject to any obligation of confidence owed by the
-            recipient under contract or otherwise.
-          </td>
-        </tr>
-        <tr>
-          <td class="footer-logo">
-            <img src="{{ asset('images/horizontal-logo.png') }}"
-            width="2.12in" />
-          </td>
-          <td class="footer-page">
-            <a
-            href="{{ config('services.company.url') }}"
-            class="footer-link"
-            target="_blank">{{ config('services.company.web') }}</a>&nbsp;|&nbsp;Page
-            {PAGENO}
-          </td>
-        </tr>
-      </table>
-    </footer> --}}
-
-
-
-
   </div>
+ 
+   <htmlpagefooter name="page-footer">
+        <div class="footer" style="font-size:6pt;">
+        <img src="{{ asset('images/horizontal-logo.png') }}" alt="eliteinsure" class="logo" width="200"/>
+        <div style="margin-left:460px; margin-top:-15px;" >
+        <a style="font-size:11px;" href="https://eliteinsure.co.nz" class="footer-link" target="_blank">
+        www.eliteinsure.co.nz
+        </a>&nbsp;|&nbsp;Page
+        {PAGENO}
+        </div>
+        </div>
+        </footer>
+  </htmlpagefooter>
+
 </body>
 </html>
 

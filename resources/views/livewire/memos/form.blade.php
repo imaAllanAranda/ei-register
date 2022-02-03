@@ -13,15 +13,9 @@
           <x-jet-input-error for="memo_num" class="mt-2" />
         </div> --}}
         <div class="form-input">
-          <x-jet-label for="position_of_writer" value="Writer Position" />
           <x-jet-input type="text" id="update_data" class="block w-full mt-1 hidden" wire:model.defer="memoId" />
           <x-jet-input-error for="position_of_writer" class="mt-2" />
         </div>
-
-
-
-
-
         <div class="form-input">
           <x-jet-label for="recipient" value="Recipient" />
           <x-jet-input type="text" id="recipient" class="block w-full mt-1" wire:model.defer="input.recipient" />
@@ -49,7 +43,8 @@
         <div class="form-input">
           <x-jet-label for="content" value="Content" />
           <x-textarea id="content" class="block w-full mt-1 resize-y" wire:model.defer="input.content" />
-          <x-jet-input-error for="content" class="mt-2" />
+          <textarea id="editor" cols="30" rows="10" class="block w-full mt-1" wire:model.defer="input.content"></textarea>
+
         </div>
 
 
@@ -59,8 +54,6 @@
           <x-date-picker id="memo_date" wire:model.defer="input.memo_date" />
           <x-jet-input-error for="memo_date" class="mt-2" />
         </div>
-
-
 
 
         <div class="form-input">
@@ -75,14 +68,13 @@
           <x-jet-input-error for="position_of_writer" class="mt-2" />
         </div>
 
-
-
-
-        <div class="form-input">
+        <div class="form-input" id="signature_form" {{ isset($memoId) ? 'hidden' : ''  }}>
           <x-jet-label for="signature_of_writer" value="Writer Signature" />
-          <div id="signaturePad"></div>
-          &ensp;
+          <div class="wrapper" style="margin-bottom: 5px;">
+            <canvas id="signaturePad" class="signaturePad" style="border:1px solid black;" width=400 height=200></canvas>
+          </div>
           <x-jet-secondary-button id="clear" class="ml-2">Clear signature</x-jet-secondary-button>
+
           {{-- <x-jet-input type="text" id="signature64" class="block w-full mt-1" wire:model.defer="input.signature_of_writer" /> --}}
           {{-- <x-textarea id="signature64" name="signature_of_writer" class="block w-full mt-1 resize-y" wire:model="input.signature_of_writer" /> --}}
           <x-jet-input type="text" id="signature64" class="block w-full mt-1 hidden" wire:model.defer="input.signature_of_writer"/>
@@ -94,10 +86,6 @@
 
       </div>
     </x-slot>
-
-
-
-
 
 
     <x-slot name="footer">
@@ -117,10 +105,6 @@
 
         @endif
 
-
-
-
-
         <x-jet-secondary-button type="button" class="ml-2" wire:click="$set('showModal', false)">
           @if (auth()->user()->getPermissionNames()->intersect(['memos.create', 'memos.update'])->count())
           Cancel
@@ -134,107 +118,117 @@
     </x-form-modal>
   </div>
 
+<style type="text/css">
+  .wrapper {
+    position: relative;
+    width: 400px;
+    height: 200px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 
-
-
-
-
-
+  .signaturPad {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 400px;
+    height: 200px;
+    background-color: white;
+  }
+</style>
+<script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   {{-- <link type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet"> --}}
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
   <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
-
-
-
-
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 
 
   <script type="text/javascript">
+ ClassicEditor
+    .create( document.querySelector( '#editor' ) )
+    .then(function(editor){
+      editor.model.document.on('change:data', () =>{
+        @this.set('input.content', editor.getData());
+      });
 
-
-    var signaturePad = $('#signaturePad').signature({syncField: '#signature64', syncFormat: 'PNG'});
-
-    // console.log($('#signature64').val());
-    $('#clear').click(function(e) {
-      e.preventDefault();
-      signaturePad.signature('clear');
-      $("#signature64").val('');
+    })
+    .catch( error => {
+      console.error( error );
+    } );
+    var signaturePad = new SignaturePad(document.getElementById('signaturePad'), {
+      backgroundColor: 'rgba(255, 255, 255, 0)',
+      penColor: 'rgb(0, 0, 0)'
+    });
+   
+    document.getElementById('clear').addEventListener('click', function () {
+    signaturePad.clear();
     });
 
+    var ckeditor = $('#editor').val();
 
 
     function submit_button(){
-
+      var ckeditor = $('#editor').val();
+      var data = signaturePad.toDataURL('image/png');
       var val = $('#update_data').val();
       var url_update = '/updategetmsg';
 
-      // alert(val);
-
-      if(val !== null){
-
+      if(val !== ""){
         url_update = '/updategetmsg';
-
-
-
       }
       else{
-
         url_update = '/getmsg';
-
       }
+        $.ajax({
+          type:'POST',
+          url: url_update,
+          data:{
+            "_token": "{{ csrf_token() }}",
+            id:$("#update_data").val(),
+            signature64:data,
+            memo_date:$("#memo_date").val(),
 
-
-      console.log($('#update_data').val());
-      alert(url_update);
-
-      $.ajax({
-        type:'POST',
-        url: url_update,
-        data:{
-          "_token": "{{ csrf_token() }}",
-          id:$("#update_data").val(),
-          signature64:$("#signature64").val(),
-          memo_date:$("#memo_date").val(),
-
-          recipient:$("#recipient").val(),
-          recipient_company:$("#recipient_company").val(),
-          recipient_address:$("#recipient_address").val(),
-          subject:$("#subject").val(),
-          content:$("#content").val(),
-          name_of_writer:$("#name_of_writer").val(),
-          position_of_writer:$("#position_of_writer").val(),
-          // signature_of_writer:$("#signature_of_writer").val()
-
-        },
-        success:function(data) {
-
-          console.log(data.message);
-          alert(data.message);
-
-          signature64:$("#signature64").val('');
-          memo_date:$("#memo_date").val('');
-
-          recipient:$("#recipient").val('');
-          recipient_company:$("#recipient_company").val('');
-          recipient_address:$("#recipient_address").val('');
-          subject:$("#subject").val('');
-          content:$("#content").val('');
-          name_of_writer:$("#name_of_writer").val('')
-          position_of_writer:$("#position_of_writer").val('');
-
-
-
-
-        }
-      });
-
-
-
-
+            recipient:$("#recipient").val(),
+            recipient_company:$("#recipient_company").val(),
+            recipient_address:$("#recipient_address").val(),
+            subject:$("#subject").val(),
+            content:ckeditor,
+            name_of_writer:$("#name_of_writer").val(),
+            position_of_writer:$("#position_of_writer").val(),
+          },
+          success:function(data) {
+            if(data.status = 1){
+              var message = "";
+              if (data.message === "created"){
+                 message = "save";
+              }else{
+                 message = "updated";
+              }
+              swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Memo successfully '+message,
+                    showConfirmButton: false,
+                    timer: 2500
+                  }).then(function () {
+                    window.location = 'memos';
+                  });
+                }else{
+                  swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Something went wrong please try again!',
+                    showConfirmButton: false
+                  })
+                }
+          }
+        });
     }
   </script>
 

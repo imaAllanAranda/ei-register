@@ -27,7 +27,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
-Route::get('/clear-cache', function() {
+
+Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     return "Cache is cleared";
 });
@@ -49,7 +50,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     ])->middleware(['permission:memos']);
 
 
-    
+
+
+
+
     Route::resource('policy', PolicyController::class)->only([
         'index',
     ]);
@@ -61,9 +65,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::resource('attendance', AttendanceController::class)->only([
         'index',
     ]);
-
-
-
 
     Route::resource('claims', ClaimController::class)->only([
         'index',
@@ -107,21 +108,29 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         'index',
     ])->middleware(['permission:advisers']);
 
-    Route::controller(MemoController::class)->group(function () {
-        // Route::get('/orders/{id}', 'show');
-        Route::post('/signature', 'testsignature');
-    });
 
+
+    // Route::get('/test', function () {
+    //     return 'Hello World';
+    // });
+
+    // Route::controller(MemoController::class)->group(function () {
+    //     // Route::get('/orders/{id}', 'show');
+    //     Route::post('/signature', 'testsignature');
+    // });
+
+    // Route::get('/testing', 'MemoController@test');
+    Route::get('/testing', [MemoController::class, 'testget']);
+
+    // Route::post('/testing', [MemoController::class, 'testingsignature']);
 
     Route::post('/getmsg', [MemoController::class, 'submitmemo']);
     Route::post('/updategetmsg', [MemoController::class, 'memoupdate']);
 
 
 
-
-
-
-
+    // Route::post('/signature', [MemoController::class, 'testsignature'])->name('testsignature');
+    Route::post('/testsignature', 'MemoController@testsignature');
 
 
     Route::group(['as' => 'reports.', 'prefix' => 'reports'], function () {
@@ -152,7 +161,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         Route::group(['as' => 'advisers.', 'prefix' => 'advisers'], function () {
             Route::get('/{adviser}', [AdviserController::class, 'pdf'])->name('pdf')->middleware(['permission:advisers.view-pdf']);
         });
-
 
         Route::group(['as' => 'memos.', 'prefix' => 'memos'], function () {
             Route::get('/{memo}', [MemoController::class, 'pdf'])->name('pdf')->middleware(['permission:memos.view-pdf']);

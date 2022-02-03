@@ -84,25 +84,8 @@
                 </th>
                 @endif
 
-
-
-
-
               </tr>
             </thead>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             <tbody>
 
@@ -116,10 +99,6 @@
                         <x-heroicon-o-dots-vertical class="h-6 w-6" />
                       </button>
                     </x-slot>
-
-
-
-
                     <x-slot name="content">
                       <x-jet-dropdown-link href="javascript:void(0)" wire:click="$emitTo('memos.form', 'edit', {{ $memo->id }})">
 
@@ -141,8 +120,6 @@
                   </x-jet-dropdown>
                 </td>
 
-
-
                 <td>{{ $memo->memo_num }}</td>
                 <td>{{ $memo->subject }}</td>
                 <td>{{ $memo->name_of_writer }}</td>
@@ -158,8 +135,6 @@
                 </button>
               </td>
               @endif
-
-
 
             </tr>
             @endforeach
@@ -188,9 +163,6 @@
     <x-jet-secondary-button type="button" wire:click="$set('showPdf', false)">Close</x-jet-secondary-button>
   </x-slot>
 </x-jet-dialog-modal>
-
-
-
 
 
 <x-jet-confirmation-modal wire:model="showDelete">
