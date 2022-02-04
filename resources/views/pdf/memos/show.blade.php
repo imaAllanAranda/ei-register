@@ -22,7 +22,7 @@
     p{
       font-size: 13px;
     }
- 
+    
   </style>
 </head>
 <body style="font-family: Trebuchet MS, sans-serif	">
@@ -48,6 +48,10 @@
 
     </div>
 
+    <div style="position:absolute;top:0.26in;left:6.1in;width:150px;line-height:0.27in;">
+      <p>{{ $memo->memo_num }}</p>
+    </div>
+
 
     <div style="position:absolute;top:1.26in;left:1.2in;width:190px;line-height:0.27in;">
       <p>
@@ -59,7 +63,13 @@
       </p>
     </div>
 
-     <div id="recipient" style="position:absolute;top:1.90in;left:1.2in;width:200px;line-height:0.17in;">
+
+
+
+
+
+
+    <div id="recipient" style="position:absolute;top:1.90in;left:1.2in;width:200px;line-height:0.17in;">
       <p>
         <strong>{{ $memo->recipient }}</strong>
       </p>
@@ -78,41 +88,41 @@
     <br><br>
     <br><br>
     <div style="text-align: center;"><p style="font-family: calibri; color:#3b76d4; font-size: 17px;letter-spacing: .5px;
-">{{ $memo->subject }}</p>
-    </div>
+    ">{{ $memo->subject }}</p>
+  </div>
 <!-- 
     <div style="position:absolute;top:3.5in;padding-left: 50px"><p style="font-family: calibri; color:#3b76d4; font-size: 17px;letter-spacing: .5px;
 ">{{ $memo->subject }}</p>
-    </div> -->
-    
-    <div style="position:absolute;top:3.78in;left:1.2in;width:600px;line-height:0.17in;">
-        <hr style="color:#3b76d4;">
-    </div>
+</div> -->
 
-    <div style="position:absolute;top:4.28in;left:1.2in;width:600px;line-height:0.17in;">
-    <p>{!! $memo->content !!}</p>
+<div style="position:absolute;top:3.78in;left:1.2in;width:600px;line-height:0.17in;">
+  <hr style="color:#3b76d4;">
+</div>
 
-    <br><br><br>
-    <p style="font-size: 13px;">Regards,</p>
-      <div style="padding-top: -30px;"><img src="{{ $memo->signature_of_writer }}" alt="" height="70" width="100" ></div>
-      <div style="padding-top: -30px;"><p style="font-size: 13px;" >{{ $memo->name_of_writer }}</p></div>
-      <div style="text-align: center; width:120px; padding-top: -10px;"><hr style="  border-top: 1px dotted black;"></div>
-      <div style="text-align: center; width:120px; padding-top: -20px;"><p style="font-size: 13px;">{{ $memo->position_of_writer }}</p></div>
+<div style="position:absolute;top:4.28in;left:1.2in;width:600px;line-height:0.17in;">
+  <p>{!! $memo->content !!}</p>
+
+  <br><br><br>
+  <p style="font-size: 13px;">Regards,</p>
+  <div style="padding-top: -30px;"><img src="{{ $memo->signature_of_writer }}" alt="" height="70" width="100" ></div>
+  <div style="padding-top: -30px;"><p style="font-size: 13px;" >{{ $memo->name_of_writer }}</p></div>
+  <div style="text-align: center; width:120px; padding-top: -10px;"><hr style="  border-top: 1px dotted black;"></div>
+  <div style="text-align: center; width:120px; padding-top: -20px;"><p style="font-size: 13px;">{{ $memo->position_of_writer }}</p></div>
+</div>
+</div>
+
+<htmlpagefooter name="page-footer">
+  <div class="footer" style="font-size:6pt;">
+    <img src="{{ asset('images/horizontal-logo.png') }}" alt="eliteinsure" class="logo" width="200"/>
+    <div style="margin-left:460px; margin-top:-15px;" >
+      <a style="font-size:11px;" href="https://eliteinsure.co.nz" class="footer-link" target="_blank">
+        www.eliteinsure.co.nz
+      </a>&nbsp;|&nbsp;Page
+      {PAGENO}
     </div>
   </div>
- 
-   <htmlpagefooter name="page-footer">
-        <div class="footer" style="font-size:6pt;">
-        <img src="{{ asset('images/horizontal-logo.png') }}" alt="eliteinsure" class="logo" width="200"/>
-        <div style="margin-left:460px; margin-top:-15px;" >
-        <a style="font-size:11px;" href="https://eliteinsure.co.nz" class="footer-link" target="_blank">
-        www.eliteinsure.co.nz
-        </a>&nbsp;|&nbsp;Page
-        {PAGENO}
-        </div>
-        </div>
-        </footer>
-  </htmlpagefooter>
+</footer>
+</htmlpagefooter>
 
 </body>
 </html>

@@ -40,12 +40,20 @@
           <x-jet-input-error for="subject" class="mt-2" />
         </div>
 
-        <div class="form-input">
-          <x-jet-label for="content" value="Content" />
-          <x-textarea id="content" class="block w-full mt-1 resize-y" wire:model.defer="input.content" />
-          <textarea id="editor" cols="30" rows="10" class="block w-full mt-1" wire:model.defer="input.content"></textarea>
 
+
+
+        
+
+
+
+        <div class="form-input" wire:ignore>
+          <x-jet-label for="content" value="Content" />
+
+
+          <textarea id="editor" data-editor="@this" cols="30" rows="15" class="block w-full mt-1" wire:model.defer="input.content"></textarea>
         </div>
+
 
 
 
@@ -98,25 +106,25 @@
         {{-- <x-jet-button type="button">test create</x-jet-button> --}}
         <x-jet-button type="button" onclick="submit_button();">{{ isset($memoId) ? 'Update' : 'Register' }}</x-jet-button>
         {{-- <x-jet-button type="submit">{{ isset($memoId) ? 'Update' : 'Register' }}</x-jet-button> --}}
-        {{-- </form> --}}
-        @elseif (auth()->user()->getPermissionNames()->intersect(['memos.update'])->count())
+      {{-- </form> --}}
+      @elseif (auth()->user()->getPermissionNames()->intersect(['memos.update'])->count())
 
-        {{-- <x-jet-button type="button">test update</x-jet-button> --}}
+      {{-- <x-jet-button type="button">test update</x-jet-button> --}}
 
+      @endif
+
+      <x-jet-secondary-button type="button" class="ml-2" wire:click="$set('showModal', false)">
+        @if (auth()->user()->getPermissionNames()->intersect(['memos.create', 'memos.update'])->count())
+        Cancel
+        @else
+        Close
         @endif
+      </x-jet-secondary-button>
 
-        <x-jet-secondary-button type="button" class="ml-2" wire:click="$set('showModal', false)">
-          @if (auth()->user()->getPermissionNames()->intersect(['memos.create', 'memos.update'])->count())
-          Cancel
-          @else
-          Close
-          @endif
-        </x-jet-secondary-button>
+    </x-slot>
 
-      </x-slot>
-
-    </x-form-modal>
-  </div>
+  </x-form-modal>
+</div>
 
 <style type="text/css">
   .wrapper {
@@ -140,108 +148,117 @@
 </style>
 <script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>
 
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  {{-- <link type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet"> --}}
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-  <script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
-  <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+{{-- <link type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet"> --}}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
+<link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 
 
-  <script type="text/javascript">
- ClassicEditor
-    .create( document.querySelector( '#editor' ) )
-    .then(function(editor){
-      editor.model.document.on('change:data', () =>{
-        @this.set('input.content', editor.getData());
-      });
+<script type="text/javascript">
+  ClassicEditor
+  .create( document.querySelector( '#editor' ) )
+  .then( editor => {
 
-    })
-    .catch( error => {
-      console.error( error );
-    } );
-    var signaturePad = new SignaturePad(document.getElementById('signaturePad'), {
-      backgroundColor: 'rgba(255, 255, 255, 0)',
-      penColor: 'rgb(0, 0, 0)'
+    editor.model.document.on('change:data', () => {
+
+      var editor = $('#editor').data('editor');
+      eval(editor).set('input.content', $('#editor').val());
+
     });
-   
-    document.getElementById('clear').addEventListener('click', function () {
+  })
+
+  .catch( error => {
+    console.error( error );
+  } );
+
+
+
+
+  var signaturePad = new SignaturePad(document.getElementById('signaturePad'), {
+    backgroundColor: 'rgba(255, 255, 255, 0)',
+    penColor: 'rgb(0, 0, 0)'
+  });
+
+  document.getElementById('clear').addEventListener('click', function () {
     signaturePad.clear();
-    });
+  });
 
-    var ckeditor = $('#editor').val();
+  var ckeditor = $('#editor').val();
 
 
-    function submit_button(){
-      var ckeditor = $('#editor').val();
-      var data = signaturePad.toDataURL('image/png');
-      var val = $('#update_data').val();
-      var url_update = '/updategetmsg';
+  function submit_button(){
+    var ckeditor = $('.ck-editor__editable').html();
+    var data = signaturePad.toDataURL('image/png');
+    var val = $('#update_data').val();
+    var url_update = '/updategetmsg';
 
-      if(val !== ""){
-        url_update = '/updategetmsg';
-      }
-      else{
-        url_update = '/getmsg';
-      }
-        $.ajax({
-          type:'POST',
-          url: url_update,
-          data:{
-            "_token": "{{ csrf_token() }}",
-            id:$("#update_data").val(),
-            signature64:data,
-            memo_date:$("#memo_date").val(),
-
-            recipient:$("#recipient").val(),
-            recipient_company:$("#recipient_company").val(),
-            recipient_address:$("#recipient_address").val(),
-            subject:$("#subject").val(),
-            content:ckeditor,
-            name_of_writer:$("#name_of_writer").val(),
-            position_of_writer:$("#position_of_writer").val(),
-          },
-          success:function(data) {
-            if(data.status = 1){
-              var message = "";
-              if (data.message === "created"){
-                 message = "save";
-              }else{
-                 message = "updated";
-              }
-              swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'Memo successfully '+message,
-                    showConfirmButton: false,
-                    timer: 2500
-                  }).then(function () {
-                    window.location = 'memos';
-                  });
-                }else{
-                  swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: 'Something went wrong please try again!',
-                    showConfirmButton: false
-                  })
-                }
-          }
-        });
+    if(val !== ""){
+      url_update = '/updategetmsg';
     }
-  </script>
+    else{
+      url_update = '/getmsg';
+    }
+    $.ajax({
+      type:'POST',
+      url: url_update,
+      data:{
+        "_token": "{{ csrf_token() }}",
+        id:$("#update_data").val(),
+        signature64:data,
+        memo_date:$("#memo_date").val(),
+
+        recipient:$("#recipient").val(),
+        recipient_company:$("#recipient_company").val(),
+        recipient_address:$("#recipient_address").val(),
+        subject:$("#subject").val(),
+        content:ckeditor,
+        // content:$('#content').val(),
+        name_of_writer:$("#name_of_writer").val(),
+        position_of_writer:$("#position_of_writer").val(),
+      },
+      success:function(data) {
+        if(data.status = 1){
+          var message = "";
+          if (data.message === "created"){
+           message = "save";
+         }else{
+           message = "updated";
+         }
+         swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Memo successfully '+message,
+          showConfirmButton: false,
+          timer: 2500
+        }).then(function () {
+          window.location = 'memos';
+        });
+      }else{
+        swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Something went wrong please try again!',
+          showConfirmButton: false
+        })
+      }
+    }
+  });
+  }
+</script>
 
 
 
-  {{-- <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
-  <script>
-    document.addEventListener('alpine:init', ()  => {
-      Alpine.data('signaturePad', () => ({
-        signaturePadInstance: null,
-        init(){
-          this.signaturePadInstance = new signaturePad(this.$refs.signature_canvas);
-        }
-      }))
-    })
-  </script> --}}
+{{-- <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script>
+  document.addEventListener('alpine:init', ()  => {
+    Alpine.data('signaturePad', () => ({
+      signaturePadInstance: null,
+      init(){
+        this.signaturePadInstance = new signaturePad(this.$refs.signature_canvas);
+      }
+    }))
+  })
+</script> --}}
