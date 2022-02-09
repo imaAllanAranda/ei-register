@@ -79,7 +79,7 @@ Incident Reports
 <x-jet-nav-link href="{{ route('memos.index') }}"
 :active="request()->routeIs('memos.index')"
 icon="heroicon-o-receipt-tax">
-Memo
+Company Memo
 </x-jet-nav-link>
 @endif
 

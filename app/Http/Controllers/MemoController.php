@@ -6,6 +6,7 @@ use App\Models\Memo;
 use Illuminate\Http\Request;
 use niklasravnsborg\LaravelPdf\Facades\Pdf;
 use Illuminate\Support\Carbon;
+use Mail;
 
 use App\Models\Testsignature;
 use PHPUnit\Util\Test;
@@ -53,6 +54,7 @@ class MemoController extends Controller
         $memo->content = $request->content;
         $memo->name_of_writer = $request->name_of_writer;
         $memo->position_of_writer = $request->position_of_writer;
+        $memo->memo_type = $request->memo_type;
         $memo->signature_of_writer = $request->signature64;
         $memo->save();
 
@@ -82,12 +84,12 @@ class MemoController extends Controller
         $id = $request->id;
         $memo =  Memo::findOrFail($id);
         $memo->memo_date = $request->memo_date;
-
         $memo->recipient = $request->recipient;
         $memo->recipient_company = $request->recipient_company;
         $memo->recipient_address = $request->recipient_address;
         $memo->subject = $request->subject;
         $memo->content = $request->content;
+        $memo->memo_type = $request->memo_type;
         $memo->name_of_writer = $request->name_of_writer;
         $memo->position_of_writer = $request->position_of_writer;
         $memo->save();
@@ -124,4 +126,26 @@ class MemoController extends Controller
         ]);
         return $pdf->stream();
     }
+
+    // public function sendEmail(){    
+    //       $pdf = Pdf::loadView('pdf.memos.show', [
+    //         'title' => 'Memo',
+    //         'memo' => $memo,
+    //     ], [], [
+    //         'instanceConfigurator' => function ($mpdf) {
+    //             $mpdf->setAutoBottomMargin = 'stretch';
+    //         },
+    //     ]);
+        
+    //     $attachment = $pdf->stream();
+
+    //     $message = Mail::send([], [], function ($message) { 
+    //          $message->to('allan@eliteinsure.co.nz', 'Company Memo')
+    //            ->subject('subject') 
+    //            ->setBody('some body', 'text/html')
+    //            ->attach($attachment);
+
+    //     });
+    //     return $message;
+    // }
 }

@@ -14,9 +14,6 @@
       @endif
     </div>
 
-
-
-
     <div class="mb-4">
       <div class="sm:hidden">
         <label for="tabs" class="sr-only">Select a tab</label>
@@ -27,12 +24,6 @@
         </nav>
       </div>
     </div>
-
-
-
-
-
-
 
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 h-screen">
       <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -133,6 +124,10 @@
                   wire:click="confirmDelete({{ $memo->id }})">
                   <x-heroicon-o-trash class="h-6 w-6" />
                 </button>
+
+                 <button type="button" class="text-green-500 hover:text-green-700" title="Send Email Memo" onclick="showConfirm({{ $memo->id }},{{ $memo->memo_type }})">
+                  <x-heroicon-o-mail class="h-6 w-6" />
+                </button>
               </td>
               @endif
 
@@ -152,6 +147,7 @@
     </div>
   </div>
 </div>
+<div id='loadPage' style="display:none;"></div>
 
 
 <x-jet-dialog-modal wire:model="showPdf" max-width="5xl" focusable>
@@ -174,5 +170,34 @@
     </x-jet-secondary-button>
   </x-slot>
 </x-jet-confirmation-modal>
-</div>
 
+
+</div>
+<script type="text/javascript">
+  function showConfirm(id,type){
+      swal.fire({
+      title: 'Send Email Memo',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Send it!'
+    }).then((result) => {
+      if(result.isConfirmed){
+           $('#loadPage').load('https://localhost/ei-portal/memo_pdf?id='+id+'&mail=1&userType='+type);
+            setTimeout(function() {
+              swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Email Sent!',
+                    showConfirmButton: false
+                  })
+            }, 2000);
+          }else{
+
+          }
+    })
+
+  }
+</script>

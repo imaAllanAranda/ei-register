@@ -40,22 +40,14 @@
           <x-jet-input-error for="subject" class="mt-2" />
         </div>
 
-
-
-
         
 
-
+        <input type="hidden" id="contentMemo" value="{{ $content }}">
 
         <div class="form-input" wire:ignore>
-          <x-jet-label for="content" value="Content" />
-
-
-          <textarea id="editor" data-editor="@this" cols="30" rows="15" class="block w-full mt-1" wire:model.defer="input.content"></textarea>
+          <a href="javascript:;" title="Synchronize Content" onclick="refresh()">Content&nbsp;<x-heroicon-o-refresh style="display: inline; color:green;" class="h-5 w-5" /></a>
+          <textarea id="editor" data-editor="@this" cols="30" rows="50" class="block w-full mt-1">{{ $content }}</textarea> 
         </div>
-
-
-
 
         <div class="form-input">
           <x-jet-label for="memo_date" value="Memo Date" />
@@ -76,10 +68,26 @@
           <x-jet-input-error for="position_of_writer" class="mt-2" />
         </div>
 
+        <div class="form-input">
+          <x-jet-label for="memo_type" value="Memo Type" />
+          <select id="memo_type" name="tabs"
+            class="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+              <option value="4" {{ ($memo_type == 4 ) ? 'Selected' : '' }} >Admin</option>
+              <option value="3" {{ ($memo_type == 3 ) ? 'Selected' : '' }} >Compliance Officer</option>
+               <option value="5" {{ ($memo_type == 5 ) ? 'Selected' : '' }} >Face To Face Marketer</option>
+                <option value="6" {{ ($memo_type == 6 ) ? 'Selected' : '' }} >Telemarketer</option>
+              <option value="8" {{ ($memo_type == 8 ) ? 'Selected' : '' }} >SADR </option>
+              <option value="7" {{ ($memo_type == 7 ) ? 'Selected' : '' }} >ADR </option>
+              <option value="2" {{ ($memo_type == 2 ) ? 'Selected' : '' }} >Adviser</option>
+              <option value="9" {{ ($memo_type == 9 ) ? 'Selected' : '' }} >IT Specialist</option>
+          </select>
+          <x-jet-input-error for="memo_type" class="mt-2" />
+        </div>
+
         <div class="form-input" id="signature_form" {{ isset($memoId) ? 'hidden' : ''  }}>
           <x-jet-label for="signature_of_writer" value="Writer Signature" />
           <div class="wrapper" style="margin-bottom: 5px;">
-            <canvas id="signaturePad" class="signaturePad" style="border:1px solid black;" width=400 height=200></canvas>
+            <canvas id="signaturePad" class="signaturePad" style="border:1px solid gray;" width=400 height=200></canvas>
           </div>
           <x-jet-secondary-button id="clear" class="ml-2">Clear signature</x-jet-secondary-button>
 
@@ -145,6 +153,9 @@
     height: 200px;
     background-color: white;
   }
+  .ck.ck-editor__main>.ck-editor__editable{
+    height: 300px!important;
+  }
 </style>
 <script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>
 
@@ -158,25 +169,23 @@
 
 
 <script type="text/javascript">
-  ClassicEditor
-  .create( document.querySelector( '#editor' ) )
-  .then( editor => {
+let editor_variable; 
 
-    editor.model.document.on('change:data', () => {
+ClassicEditor
+      .create( document.querySelector( '#editor' ) )
+      .then( editor => {
+          console.log( $("#contentMemo").val());
+          //editor.setData()
+          editor_variable = editor;
+      } )
+      .catch( error => {
+          console.error( error );
+      });
 
-      var editor = $('#editor').data('editor');
-      eval(editor).set('input.content', $('#editor').val());
-
-    });
-  })
-
-  .catch( error => {
-    console.error( error );
-  } );
-
-
-
-
+ function refresh(){
+    editor_variable.setData($("#contentMemo").val())
+ }
+  
   var signaturePad = new SignaturePad(document.getElementById('signaturePad'), {
     backgroundColor: 'rgba(255, 255, 255, 0)',
     penColor: 'rgb(0, 0, 0)'
@@ -190,6 +199,7 @@
 
 
   function submit_button(){
+    var memo_type = $("#memo_type").val();
     var ckeditor = $('.ck-editor__editable').html();
     var data = signaturePad.toDataURL('image/png');
     var val = $('#update_data').val();
@@ -201,6 +211,7 @@
     else{
       url_update = '/getmsg';
     }
+
     $.ajax({
       type:'POST',
       url: url_update,
@@ -215,7 +226,7 @@
         recipient_address:$("#recipient_address").val(),
         subject:$("#subject").val(),
         content:ckeditor,
-        // content:$('#content').val(),
+        memo_type:memo_type,
         name_of_writer:$("#name_of_writer").val(),
         position_of_writer:$("#position_of_writer").val(),
       },

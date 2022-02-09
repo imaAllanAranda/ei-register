@@ -63,12 +63,6 @@
       </p>
     </div>
 
-
-
-
-
-
-
     <div id="recipient" style="position:absolute;top:1.90in;left:1.2in;width:200px;line-height:0.17in;">
       <p>
         <strong>{{ $memo->recipient }}</strong>

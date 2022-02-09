@@ -49,11 +49,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         'index',
     ])->middleware(['permission:memos']);
 
-
-
-
-
-
     Route::resource('policy', PolicyController::class)->only([
         'index',
     ]);
@@ -127,7 +122,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/getmsg', [MemoController::class, 'submitmemo']);
     Route::post('/updategetmsg', [MemoController::class, 'memoupdate']);
 
-
+    Route::post('/sendEmail', [MemoController::class, 'sendEmail']);
 
     // Route::post('/signature', [MemoController::class, 'testsignature'])->name('testsignature');
     Route::post('/testsignature', 'MemoController@testsignature');

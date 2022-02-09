@@ -16,7 +16,11 @@ class Form extends Component
 
     public $memoId;
 
+    public $content;
+
     public $input;
+
+    public $memo_type;
 
     public $showModal = false;
 
@@ -93,6 +97,10 @@ class Form extends Component
         abort_unless(auth()->user()->hasPermissionTo('memos.update'), 403);
 
         $this->memoId = $id;
+
+        $this->content = $this->memo->content;
+
+        $this->memo_type = $this->memo->memo_type;
 
         $this->input = collect($this->memo)->except(['id', 'created_at', 'updated_at'])->all();
 
