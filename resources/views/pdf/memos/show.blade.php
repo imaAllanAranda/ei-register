@@ -99,7 +99,7 @@
   <br><br><br>
   <p style="font-size: 13px;">Regards,</p>
   <div style="padding-top: -30px;"><img src="{{ $memo->signature_of_writer }}" alt="" height="70" width="100" ></div>
-  <div style="padding-top: -30px;"><p style="font-size: 13px;" >{{ $memo->name_of_writer }}</p></div>
+  <div style="padding-top: -30px; text-align: center;"><p style="font-size: 13px;" >{{ $memo->name_of_writer }}</p></div>
   <div style="text-align: center; width:120px; padding-top: -10px;"><hr style="  border-top: 1px dotted black;"></div>
   <div style="text-align: center; width:120px; padding-top: -20px;"><p style="font-size: 13px;">{{ $memo->position_of_writer }}</p></div>
 </div>

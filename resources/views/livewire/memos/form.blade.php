@@ -1,12 +1,9 @@
+
 <div>
   <x-form-modal wire:model="showModal" submit="submit" focusable>
     <x-slot name="title">{{ $this->title }}</x-slot>
-
-
     <x-slot name="content">
       <div class="space-y-6">
-
-
         {{-- <div class="form-input">
           <x-jet-label for="memo_num" value="Memo Number" />
           <x-jet-input type="text" id="memo_num" class="block w-full mt-1" wire:model.defer="input.memo_num" />
@@ -45,8 +42,8 @@
         <input type="hidden" id="contentMemo" value="{{ $content }}">
 
         <div class="form-input" wire:ignore>
-          <a href="javascript:;" title="Synchronize Content" onclick="refresh()">Content&nbsp;<x-heroicon-o-refresh style="display: inline; color:green;" class="h-5 w-5" /></a>
-          <textarea id="editor" data-editor="@this" cols="30" rows="50" class="block w-full mt-1">{{ $content }}</textarea> 
+          <a href="javascript:;" title="Synchronize Content" id="refresh"onclick="refresh()">Content&nbsp;<x-heroicon-o-refresh style="display: inline; color:green;" class="h-5 w-5" /></a>
+          <textarea id="ckeditor_create1"  cols="30" rows="50" class="block w-full mt-1"></textarea> 
         </div>
 
         <div class="form-input">
@@ -67,20 +64,44 @@
           <x-jet-input type="text" id="position_of_writer" class="block w-full mt-1" wire:model.defer="input.position_of_writer" />
           <x-jet-input-error for="position_of_writer" class="mt-2" />
         </div>
-
+        <?php $ex = explode(",",$memo_type); ?>
         <div class="form-input">
           <x-jet-label for="memo_type" value="Memo Type" />
-          <select id="memo_type" name="tabs"
-            class="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
-              <option value="4" {{ ($memo_type == 4 ) ? 'Selected' : '' }} >Admin</option>
-              <option value="3" {{ ($memo_type == 3 ) ? 'Selected' : '' }} >Compliance Officer</option>
-               <option value="5" {{ ($memo_type == 5 ) ? 'Selected' : '' }} >Face To Face Marketer</option>
-                <option value="6" {{ ($memo_type == 6 ) ? 'Selected' : '' }} >Telemarketer</option>
-              <option value="8" {{ ($memo_type == 8 ) ? 'Selected' : '' }} >SADR </option>
-              <option value="7" {{ ($memo_type == 7 ) ? 'Selected' : '' }} >ADR </option>
-              <option value="2" {{ ($memo_type == 2 ) ? 'Selected' : '' }} >Adviser</option>
-              <option value="9" {{ ($memo_type == 9 ) ? 'Selected' : '' }} >IT Specialist</option>
-          </select>
+          <label class="inline-flex items-center">
+                <input type="checkbox" name="memo_type[]" class="rounded border-gray-300 text-tblue shadow-sm focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50" value="4" {{ (in_array(4,$ex) ? 'checked' : ' ') }} />
+                <span class="ml-2 text-sm text-shark">Admin</span>
+          </label>
+           <label class="inline-flex items-center">
+                <input type="checkbox" name="memo_type[]" class="rounded border-gray-300 text-tblue shadow-sm focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50" value="3" {{ (in_array(3,$ex) ? 'checked' : ' ') }}/>
+                <span class="ml-2 text-sm text-shark">Compliance Officer</span>
+          </label>
+           <label class="inline-flex items-center">
+                <input type="checkbox" name="memo_type[]" class="rounded border-gray-300 text-tblue shadow-sm focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50" value="5" {{ (in_array(5,$ex) ? 'checked' : ' ') }}/>
+                <span class="ml-2 text-sm text-shark">F2F Marketer</span>
+          </label>
+           <label class="inline-flex items-center">
+                <input type="checkbox" name="memo_type[]" class="rounded border-gray-300 text-tblue shadow-sm focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50" value="6" {{ (in_array(6,$ex) ? 'checked' : ' ') }}/>
+                <span class="ml-2 text-sm text-shark">Telemarketer</span>
+          </label>
+          <x-jet-input-error for="memo_type" class="mt-2" />
+        </div>
+        <div class="form-input">
+        <label class="inline-flex items-center">
+                <input type="checkbox" name="memo_type[]" class="rounded border-gray-300 text-tblue shadow-sm focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50" value="8"  {{ (in_array(8,$ex) ? 'checked' : ' ') }}/>
+                <span class="ml-2 text-sm text-shark">SADR</span>
+          </label>
+           <label class="inline-flex items-center">
+                <input type="checkbox" name="memo_type[]" class="rounded border-gray-300 text-tblue shadow-sm focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50" value="7" {{ (in_array(7,$ex) ? 'checked' : ' ') }}/>
+                <span class="ml-2 text-sm text-shark">ADR</span>
+          </label>
+           <label class="inline-flex items-center">
+                <input type="checkbox" name="memo_type[]" class="rounded border-gray-300 text-tblue shadow-sm focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50" value="2" {{ (in_array(2,$ex) ? 'checked' : ' ') }}/>
+                <span class="ml-2 text-sm text-shark">Adivser</span>
+          </label>
+           <label class="inline-flex items-center">
+                <input type="checkbox" name="memo_type[]" class="rounded border-gray-300 text-tblue shadow-sm focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50" value="9" {{ (in_array(9,$ex) ? 'checked' : ' ') }}/>
+                <span class="ml-2 text-sm text-shark">IT Specialist</span>
+          </label>
           <x-jet-input-error for="memo_type" class="mt-2" />
         </div>
 
@@ -156,34 +177,30 @@
   .ck.ck-editor__main>.ck-editor__editable{
     height: 300px!important;
   }
+  .cke_button__easyimageupload {
+            display: none !important;
+        }
 </style>
-<script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>
-
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-{{-- <link type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet"> --}}
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
-<link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 
 
 <script type="text/javascript">
-let editor_variable; 
 
-ClassicEditor
-      .create( document.querySelector( '#editor' ) )
-      .then( editor => {
-          console.log( $("#contentMemo").val());
-          //editor.setData()
-          editor_variable = editor;
-      } )
-      .catch( error => {
-          console.error( error );
-      });
+
+$(document).ready(function() {
+
+    CKEDITOR.replace('ckeditor_create1');
+    CKEDITOR.config.extraPlugins = "base64image";
+});
+
+
+function loadContent(){
+   setTimeout(function() {
+      CKEDITOR.instances['ckeditor_create1'].setData($("#contentMemo").val())   
+    }, 3000);
+}
 
  function refresh(){
-    editor_variable.setData($("#contentMemo").val())
+    CKEDITOR.instances['ckeditor_create1'].setData($("#contentMemo").val())
  }
   
   var signaturePad = new SignaturePad(document.getElementById('signaturePad'), {
@@ -195,11 +212,24 @@ ClassicEditor
     signaturePad.clear();
   });
 
-  var ckeditor = $('#editor').val();
+  //var ckeditor = $('#editor').val();
 
+
+  var memo_arr = [];
 
   function submit_button(){
-    var memo_type = $("#memo_type").val();
+
+
+    var checked_memo = 
+                $("input[name='memo_type[]']").map(function()
+                {
+                  if($(this).prop("checked") == true){
+                     memo_arr.push($(this).val());
+                  }
+                  return 1;
+                }).get();
+
+    var memo_type = memo_arr.toString();
     var ckeditor = $('.ck-editor__editable').html();
     var data = signaturePad.toDataURL('image/png');
     var val = $('#update_data').val();
@@ -225,7 +255,7 @@ ClassicEditor
         recipient_company:$("#recipient_company").val(),
         recipient_address:$("#recipient_address").val(),
         subject:$("#subject").val(),
-        content:ckeditor,
+        content:CKEDITOR.instances['ckeditor_create1'].getData(),
         memo_type:memo_type,
         name_of_writer:$("#name_of_writer").val(),
         position_of_writer:$("#position_of_writer").val(),

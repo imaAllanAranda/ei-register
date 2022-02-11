@@ -7,7 +7,7 @@
 
       @if (auth()->user()->hasPermissionTo('memos.create'))
       <div>
-        <x-jet-button type="button" wire:click="$emitTo('memos.form', 'add')">
+        <x-jet-button type="button"  wire:click="$emitTo('memos.form', 'add')">
           Register a Memo
         </x-jet-button>
       </div>
@@ -44,6 +44,13 @@
                     Memo Num
                   </x-column-sorter>
                 </th>
+
+                 <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-shark uppercase tracking-wider">
+                  <x-column-sorter column="type">
+                    Date Created
+                  </x-column-sorter>
+                </th>
+
                 <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-shark uppercase tracking-wider">
                   <x-column-sorter column="name">
                     Subject
@@ -91,7 +98,7 @@
                       </button>
                     </x-slot>
                     <x-slot name="content">
-                      <x-jet-dropdown-link href="javascript:void(0)" wire:click="$emitTo('memos.form', 'edit', {{ $memo->id }})">
+                      <x-jet-dropdown-link href="javascript:void(0)" onclick="loadContent()" wire:click="$emitTo('memos.form', 'edit', {{ $memo->id }})">
 
                         @if (auth()->user()->hasPermissionTo('memos.update'))Update
 
@@ -112,6 +119,7 @@
                 </td>
 
                 <td>{{ $memo->memo_num }}</td>
+                <td>{{ $memo->created_at  }}</td>
                 <td>{{ $memo->subject }}</td>
                 <td>{{ $memo->name_of_writer }}</td>
                 <td>{{ $memo->recipient }}</td>
@@ -125,7 +133,7 @@
                   <x-heroicon-o-trash class="h-6 w-6" />
                 </button>
 
-                 <button type="button" class="text-green-500 hover:text-green-700" title="Send Email Memo" onclick="showConfirm({{ $memo->id }},{{ $memo->memo_type }})">
+                 <button type="button" class="sendEmailButton{{$memo->id}}" style="    {{ ($memo->is_sent == 1 ) ? 'color:#0439b5;' : 'color:green;' }}  "  title="Send Email Memo" onclick="showConfirm({{ $memo->id }})">
                   <x-heroicon-o-mail class="h-6 w-6" />
                 </button>
               </td>
@@ -153,7 +161,12 @@
 <x-jet-dialog-modal wire:model="showPdf" max-width="5xl" focusable>
   <x-slot name="title">Memo PDF</x-slot>
   <x-slot name="content">
-    <iframe src="{{ $this->PdfUrl }}" class="w-full" style="height: 600px;"></iframe>
+
+    <!-- https://onlineinsure.co.nz/portal -->
+    <!-- https://onlineinsure.co.nz/stage/portal -->
+    <!-- https://localhost/ei-portal/ -->
+
+    <iframe src="https://localhost/ei-portal/memo_pdf?id={{$this->memoId}}" class="w-full" style="height: 600px;"></iframe>
   </x-slot>
   <x-slot name="footer">
     <x-jet-secondary-button type="button" wire:click="$set('showPdf', false)">Close</x-jet-secondary-button>
@@ -173,8 +186,22 @@
 
 
 </div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
+<link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+
+
 <script type="text/javascript">
-  function showConfirm(id,type){
+
+
+  function showConfirm(id){
       swal.fire({
       title: 'Send Email Memo',
       text: "You won't be able to revert this!",
@@ -185,7 +212,11 @@
       confirmButtonText: 'Yes, Send it!'
     }).then((result) => {
       if(result.isConfirmed){
-           $('#loadPage').load('https://localhost/ei-portal/memo_pdf?id='+id+'&mail=1&userType='+type);
+
+    //  https://onlineinsure.co.nz/portal
+    //  https://onlineinsure.co.nz/stage/portal
+    //  https://localhost/ei-portal/
+           $('#loadPage').load('https://localhost/ei-portal/memo_pdf?id='+id+'&mail=1');
             setTimeout(function() {
               swal.fire({
                     position: 'center',
@@ -193,6 +224,7 @@
                     title: 'Email Sent!',
                     showConfirmButton: false
                   })
+              $(".sendEmailButton"+id).css('color','#0439b5');
             }, 2000);
           }else{
 
@@ -200,4 +232,5 @@
     })
 
   }
+
 </script>
