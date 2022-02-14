@@ -24,21 +24,46 @@
         </nav>
       </div>
     </div>
+<style type="text/css">
+  <style>
+.dropbtn {
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
 
-   <!--  <div class="mb-4 flex flex-col md:flex-row md:items-end md:space-x-4 space-y-2 md:space-y-0">
-        <label>Search By</label><select id="memo_type" name="tabs" class="block focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
-              <option value="1">Memo Number</option>
-              <option value="1">Writer</option>
-              <option value="1">Recipient</option>               
-        </select>
-    </div> -->
- 
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+</style>
+</style>
       <div style="background-color: white; padding:20px;" class="rounded-md focus:ring-indigo-500 focus:border-indigo-500 border-gray-300"> 
 <table border="0" cellspacing="5" cellpadding="5">
         <tbody>
             <tr>
                 <td> <p class="text-shark px-4 py-3">To:</p><td>
-                <td><input class="border-gray-300 focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50 rounded-md shadow-sm block w-full mt-1" name="min" id="min" type="text"></td>
+                <td><input  class="border-gray-300 focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50 rounded-md shadow-sm block w-full mt-1" name="min" id="min" type="text"></td>
                 <td><p class="text-shark px-4 py-3">From:</p></td>
                 <td><input class="border-gray-300 focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50 rounded-md shadow-sm block w-full mt-1" name="max" id="max" type="text"></td>
             </tr>
@@ -106,14 +131,12 @@
               <tr class="{{ $index % 2 ? 'bg-gray-50' : 'bg-white' }}">
 
                 <td class="px-4 py-2 whitespace-nowrap text-left text-sm font-medium">
-                  <x-jet-dropdown align="top-left" content-classes="py-1 bg-white divide-y divide-gray-200">
-                    <x-slot name="trigger">
-                      <button type="button" class="text-lmara hover:text-dsgreen" title="Actions">
+                  <div class="dropdown">
+                     <button type="button" class="dropbtn text-lmara hover:text-dsgreen" title="Actions">
                         <x-heroicon-o-dots-vertical class="h-6 w-6" />
                       </button>
-                    </x-slot>
-                    <x-slot name="content">
-                      <x-jet-dropdown-link href="javascript:void(0)" onclick="loadContent()" wire:click="$emitTo('memos.form', 'edit', {{ $memo->id }})">
+                    <div class="dropdown-content">
+                       <x-jet-dropdown-link href="javascript:void(0)" onclick="loadContent()" wire:click="$emitTo('memos.form', 'edit', {{ $memo->id }})">
 
                         @if (auth()->user()->hasPermissionTo('memos.update'))Update
 
@@ -125,12 +148,11 @@
 
                       @if (auth()->user()->hasPermissionTo('memos.view-pdf'))
 
-                      <x-jet-dropdown-link href="javascript:void(0)" wire:click="showPdf({{ $memo->id }})">View PDF</x-jet-dropdown-link>
+                      <x-jet-dropdown-link href="https://localhost/ei-portal/memo_pdf?id={{$memo->id}}" target="_blank">View PDF</x-jet-dropdown-link>
 
                       @endif
-
-                    </x-slot>
-                  </x-jet-dropdown>
+                    </div>
+                  </div>
                 </td>
 
                 <td>{{ $memo->memo_num }}</td>
@@ -143,12 +165,11 @@
 
                 @if (auth()->user()->hasPermissionTo('memos.delete'))
                 <td class="px-4 py-2 whitespace-nowrap text-sm text-shark text-opacity-75">
-                  <button type="button" class="text-red-500 hover:text-red-700" title="Delete"
-                  wire:click="confirmDelete({{ $memo->id }})">
+                  <button type="button" style="color:red;"title="Delete Memo" onclick="deleteMemo({{ $memo->id }})">
                   <x-heroicon-o-trash class="h-6 w-6" />
                 </button>
 
-                 <button type="button" class="sendEmailButton{{$memo->id}}" style="    {{ ($memo->is_sent == 1 ) ? 'color:#0439b5;' : 'color:green;' }}  "  title="Send Email Memo" onclick="showConfirm({{ $memo->id }})">
+                 <button type="button" class="sendEmailButton{{$memo->id}}" style="{{ ($memo->is_sent == 1 ) ? 'color:#0439b5;' : 'color:green;' }}  "  title="Send Email Memo" onclick="showConfirm({{ $memo->id }})">
                   <x-heroicon-o-mail class="h-6 w-6" />
                 </button>
               </td>
@@ -189,31 +210,20 @@
   }
 </style>
 
-<x-jet-dialog-modal wire:model="showPdf" max-width="5xl" focusable>
+<!-- <x-jet-dialog-modal wire:model="showPdf" max-width="5xl" focusable>
   <x-slot name="title">Memo PDF</x-slot>
   <x-slot name="content">
 
-    <!-- https://onlineinsure.co.nz/portal -->
+ -->    <!-- https://onlineinsure.co.nz/portal -->
     <!-- https://onlineinsure.co.nz/stage/portal -->
     <!-- https://localhost/ei-portal/ -->
 
-    <iframe src="https://localhost/ei-portal/memo_pdf?id={{$this->memoId}}" class="w-full" style="height: 600px;"></iframe>
+<!--     <iframe src="https://localhost/ei-portal/memo_pdf?id={{$this->memoId}}" class="w-full" style="height: 600px;"></iframe>
   </x-slot>
   <x-slot name="footer">
     <x-jet-secondary-button type="button" wire:click="$set('showPdf', false)">Close</x-jet-secondary-button>
   </x-slot>
-</x-jet-dialog-modal>
-
-
-<x-jet-confirmation-modal wire:model="showDelete">
-  <x-slot name="title">Delete Memo</x-slot>
-  <x-slot name="content">Are you sure to delete this memo?</x-slot>
-  <x-slot name="footer">
-    <x-jet-button type="button" wire:click="delete">Yes</x-jet-button>
-    <x-jet-secondary-button type="button" class="ml-2" wire:click="$set('showDelete', false)">No
-    </x-jet-secondary-button>
-  </x-slot>
-</x-jet-confirmation-modal>
+</x-jet-dialog-modal> -->
 
 
 </div>
@@ -245,7 +255,6 @@
       confirmButtonText: 'Yes, Send it!'
     }).then((result) => {
       if(result.isConfirmed){
-
     //  https://onlineinsure.co.nz/portal
     //  https://onlineinsure.co.nz/stage/portal
     //  https://localhost/ei-portal/
@@ -266,11 +275,38 @@
 
   }
 
+   function deleteMemo(id){
+      swal.fire({
+      title: 'Delete Memo',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete it!'
+    }).then((result) => {
+        if(result.isConfirmed){
+             $.ajax({
+              type:'POST',
+              url: '/memoDelete',
+              data:{
+                "_token": "{{ csrf_token() }}",
+                id:id
+              },
+              success:function(data) {
+                  location.reload();
+                }
+              });
+        }
+
+  });
+}
+
 var filter = 0;
 $(document).ready( function () {
-              $('#myTable').dataTable( {
-         "pageLength": 25
-        });
+    $('#myTable').dataTable( {
+       "pageLength": 25
+    });
 });
 
 
@@ -285,36 +321,30 @@ $(document).ready( function () {
           if(max == null && startDate >= min) {return true;}
           if (startDate <= max && startDate >= min) { return true; }
           return false;
-      }
-      );
+      });
 
-      $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-      $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+
+      $("#min").datepicker({ onSelect: function () 
+        { 
+          table.draw();
+        },
+        changeMonth: true, changeYear: true 
+        });
+      
+      $("#max").datepicker({ onSelect: function () 
+        { 
+          table.draw(); 
+        }, 
+          changeMonth: true, changeYear: true 
+        });
+      
       var table = $('#myTable').DataTable();
-
       // Event listener to the two range filtering inputs to redraw on input
       $('#min, #max').change(function () {
           table.draw();
       });
+
 });
 
-function myFunction() {
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[3];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }       
-  }
-}
 
 </script>

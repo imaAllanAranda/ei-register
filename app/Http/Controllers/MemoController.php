@@ -78,6 +78,12 @@ class MemoController extends Controller
     }
 
 
+    public function memoDelete(Request $request){
+        $id = $request->id;
+        $memo =  Memo::findOrFail($id);
+        $memo->delete();
+    }
+
 
     public function memoupdate(Request $request)
     {
@@ -127,25 +133,4 @@ class MemoController extends Controller
         return $pdf->stream();
     }
 
-    // public function sendEmail(){    
-    //       $pdf = Pdf::loadView('pdf.memos.show', [
-    //         'title' => 'Memo',
-    //         'memo' => $memo,
-    //     ], [], [
-    //         'instanceConfigurator' => function ($mpdf) {
-    //             $mpdf->setAutoBottomMargin = 'stretch';
-    //         },
-    //     ]);
-        
-    //     $attachment = $pdf->stream();
-
-    //     $message = Mail::send([], [], function ($message) { 
-    //          $message->to('allan@eliteinsure.co.nz', 'Company Memo')
-    //            ->subject('subject') 
-    //            ->setBody('some body', 'text/html')
-    //            ->attach($attachment);
-
-    //     });
-    //     return $message;
-    // }
 }

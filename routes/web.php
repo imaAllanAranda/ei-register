@@ -124,6 +124,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
     Route::post('/sendEmail', [MemoController::class, 'sendEmail']);
 
+    Route::post('/memoDelete', [MemoController::class, 'memoDelete']);
+
     // Route::post('/signature', [MemoController::class, 'testsignature'])->name('testsignature');
     Route::post('/testsignature', 'MemoController@testsignature');
 
