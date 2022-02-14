@@ -38,28 +38,38 @@
       </x-jet-nav-link>
       @endif
 
-      @if (auth()->user()->hasPermissionTo('cir'))
-      <x-jet-nav-link href="{{ route('cir.login') }}"
+
+      @if (auth()->user()->hasPermissionTo('cap'))
+      <x-jet-nav-link href="{{ route('cap.index') }}"
       :active="false"
-      icon="heroicon-o-document-report"
-      target="_blank">
-      CIR
+      icon="heroicon-o-document-report">
+      CAP
     </x-jet-nav-link>
     @endif
 
-    @if (auth()->user()->hasPermissionTo('claims'))
-    <x-jet-nav-link href="{{ route('claims.index') }}"
-    :active="request()->routeIs('claims.index')"
-    icon="heroicon-o-clipboard-list">
-    Claims
+
+    @if (auth()->user()->hasPermissionTo('cir'))
+    <x-jet-nav-link href="{{ route('cir.login') }}"
+    :active="false"
+    icon="heroicon-o-document-report"
+    target="_blank">
+    CIR
   </x-jet-nav-link>
   @endif
 
-  @if (auth()->user()->hasPermissionTo('complaints'))
-  <x-jet-nav-link href="{{ route('complaints.index') }}"
-  :active="request()->routeIs('complaints.index')"
-  icon="heroicon-o-shield-exclamation">
-  Complaints
+  @if (auth()->user()->hasPermissionTo('claims'))
+  <x-jet-nav-link href="{{ route('claims.index') }}"
+  :active="request()->routeIs('claims.index')"
+  icon="heroicon-o-clipboard-list">
+  Claims
+</x-jet-nav-link>
+@endif
+
+@if (auth()->user()->hasPermissionTo('complaints'))
+<x-jet-nav-link href="{{ route('complaints.index') }}"
+:active="request()->routeIs('complaints.index')"
+icon="heroicon-o-shield-exclamation">
+Complaints
 </x-jet-nav-link>
 @endif
 

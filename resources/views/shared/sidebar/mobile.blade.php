@@ -91,6 +91,14 @@ Attendance
 </x-jet-responsive-nav-link>
 @endif
 
+@if (auth()->user()->hasPermissionTo('cap'))
+<x-jet-responsive-nav-link href="{{ route('cap.index') }}" icon="heroicon-o-document-report"
+:active="false" target="_blank">
+CAP
+</x-jet-responsive-nav-link>
+@endif
+
+
 @if (auth()->user()->hasPermissionTo('cir'))
 <x-jet-responsive-nav-link href="{{ route('cir.login') }}" icon="heroicon-o-document-report"
 :active="false" target="_blank">

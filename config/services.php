@@ -422,6 +422,10 @@ return [
         'url' => env('ATTENDANCE_URL'),
     ],
 
+    'cap' => [
+        'url' => env('CAP_URL'),
+    ],
+
     'vulnerableClients' => [
         'natures' => ['Physical', 'Mental', 'Age', 'Language Barrier', 'Emotional', 'Physical'],
     ],
