@@ -1,9 +1,9 @@
 <div>
   <div class="flex flex-col">
     <div class="mb-4 flex flex-col md:flex-row md:items-end md:space-x-4 space-y-2 md:space-y-0">
-      <div>
+      <!-- <div>
         <x-jet-input type="text" placeholder="Search..." wire:model.debounce="search" />
-      </div>
+      </div> -->
 
       @if (auth()->user()->hasPermissionTo('memos.create'))
       <div>
@@ -25,52 +25,67 @@
       </div>
     </div>
 
-    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 h-screen">
-      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-        <div class="shadow {{-- overflow-hidden --}} border-b border-gray-200 sm:rounded-lg bg-white divide-y divide-gray-200">
-
-
+   <!--  <div class="mb-4 flex flex-col md:flex-row md:items-end md:space-x-4 space-y-2 md:space-y-0">
+        <label>Search By</label><select id="memo_type" name="tabs" class="block focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
+              <option value="1">Memo Number</option>
+              <option value="1">Writer</option>
+              <option value="1">Recipient</option>               
+        </select>
+    </div> -->
+ 
+      <div style="background-color: white; padding:20px;" class="rounded-md focus:ring-indigo-500 focus:border-indigo-500 border-gray-300"> 
+<table border="0" cellspacing="5" cellpadding="5">
+        <tbody>
+            <tr>
+                <td> <p class="text-shark px-4 py-3">To:</p><td>
+                <td><input class="border-gray-300 focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50 rounded-md shadow-sm block w-full mt-1" name="min" id="min" type="text"></td>
+                <td><p class="text-shark px-4 py-3">From:</p></td>
+                <td><input class="border-gray-300 focus:border-dsgreen focus:ring focus:ring-lmara focus:ring-opacity-50 rounded-md shadow-sm block w-full mt-1" name="max" id="max" type="text"></td>
+            </tr>
+        </tbody>
+    </table>
 
           @if ($memos->count())
-          <table class="min-w-full divide-y divide-gray-200 sm:rounded-lg">
-            <thead class="bg-gray-50 sm:rounded-t-lg">
+          <table class="table" id="myTable">
+            <thead>
               <tr>
-                <th scope="col" class="relative px-4 py-3 sm:rounded-tl-lg">
+                <th scope="col">
                   <span class="sr-only">Actions</span>
                 </th>
 
-                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-shark uppercase tracking-wider">
+               
+                <th scope="col">
                   <x-column-sorter column="type">
                     Memo Num
                   </x-column-sorter>
                 </th>
 
-                 <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-shark uppercase tracking-wider">
+                 <th scope="col">
                   <x-column-sorter column="type">
                     Date Created
                   </x-column-sorter>
                 </th>
 
-                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-shark uppercase tracking-wider">
+                <th scope="col">
                   <x-column-sorter column="name">
                     Subject
                   </x-column-sorter>
                 </th>
 
 
-                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-shark uppercase tracking-wider">
+                <th scope="col">
                   <x-column-sorter column="email">
                     Writer
                   </x-column-sorter>
                 </th>
 
-                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-shark uppercase tracking-wider">
+                <th scope="col">
                   <x-column-sorter column="fsp_no">
                     Recipient
                   </x-column-sorter>
                 </th>
 
-                {{-- <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-shark uppercase tracking-wider">
+                {{-- <th scope="col">
                   <x-column-sorter column="fsp_no">
                     Memo Date
                   </x-column-sorter>
@@ -119,7 +134,7 @@
                 </td>
 
                 <td>{{ $memo->memo_num }}</td>
-                <td>{{ $memo->created_at  }}</td>
+                <td>{{ date('m-d-Y', strtotime($memo->created_at ));  }}</td>
                 <td>{{ $memo->subject }}</td>
                 <td>{{ $memo->name_of_writer }}</td>
                 <td>{{ $memo->recipient }}</td>
@@ -146,17 +161,33 @@
 
 
         </table>
+      </div>
         {{ $memos->links() }}
         @else
         <p class="text-shark px-4 py-3">No available memo.</p>
         @endif
 
-      </div>
-    </div>
-  </div>
 </div>
-<div id='loadPage' style="display:none;"></div>
 
+<style type="text/css">
+ 
+#myTable_length{
+  display: none!important;
+}
+#ui-datepicker-div{
+    background: rgb(242, 242, 242)!important;
+    padding: 20px!important;
+    box-shadow: 20px 20px 50px grey!important;
+    line-height: 2em!important;
+    word-spacing: 30px!important;
+  }
+  .ui-datepicker-prev{
+    display:none!important;
+  }
+  .ui-datepicker-next{
+    display: none!important;
+  }
+</style>
 
 <x-jet-dialog-modal wire:model="showPdf" max-width="5xl" focusable>
   <x-slot name="title">Memo PDF</x-slot>
@@ -194,6 +225,8 @@
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 
 <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
 
@@ -232,5 +265,56 @@
     })
 
   }
+
+var filter = 0;
+$(document).ready( function () {
+              $('#myTable').dataTable( {
+         "pageLength": 25
+        });
+});
+
+
+ $(document).ready(function(){
+      $.fn.dataTable.ext.search.push(
+      function (settings, data, dataIndex) {
+          var min = $('#min').datepicker("getDate");
+          var max = $('#max').datepicker("getDate");
+          var startDate = new Date(data[2]);
+          if (min == null && max == null) { return true; }
+          if (min == null && startDate <= max) { return true;}
+          if(max == null && startDate >= min) {return true;}
+          if (startDate <= max && startDate >= min) { return true; }
+          return false;
+      }
+      );
+
+      $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+      $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+      var table = $('#myTable').DataTable();
+
+      // Event listener to the two range filtering inputs to redraw on input
+      $('#min, #max').change(function () {
+          table.draw();
+      });
+});
+
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
 
 </script>
