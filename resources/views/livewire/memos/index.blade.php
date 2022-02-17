@@ -189,7 +189,7 @@
         @endif
 
 </div>
-
+<div id="loadPage" style="display: none;">
 <style type="text/css">
  
 #myTable_length{
