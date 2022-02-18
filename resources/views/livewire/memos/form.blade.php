@@ -105,7 +105,7 @@
           <x-jet-input-error for="memo_type" class="mt-2" />
         </div>
 
-        <div class="form-input" id="signature_form" {{ isset($memoId) ? 'hidden' : ''  }}>
+        <div class="form-input" id="signature_form" {{ isset($memoId) ? 'hidden' : ''  }} hidden>
           <x-jet-label for="signature_of_writer" value="Writer Signature" />
           <div class="wrapper" style="margin-bottom: 5px;">
             <canvas id="signaturePad" class="signaturePad" style="border:1px solid gray;" width=400 height=200></canvas>

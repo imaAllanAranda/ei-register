@@ -80,34 +80,30 @@
 
                
                 <th scope="col">
-                  <x-column-sorter column="type">
+                  
                     Memo Num
-                  </x-column-sorter>
+                 
                 </th>
 
                  <th scope="col">
-                  <x-column-sorter column="type">
+                 
                     Date Created
-                  </x-column-sorter>
                 </th>
 
                 <th scope="col">
-                  <x-column-sorter column="name">
+               
                     Subject
-                  </x-column-sorter>
                 </th>
 
 
                 <th scope="col">
-                  <x-column-sorter column="email">
+                 
                     Writer
-                  </x-column-sorter>
                 </th>
 
                 <th scope="col">
-                  <x-column-sorter column="fsp_no">
+                 
                     Recipient
-                  </x-column-sorter>
                 </th>
 
                 {{-- <th scope="col">
