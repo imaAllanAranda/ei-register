@@ -9,6 +9,7 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\MeritController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\IrController;
 use App\Http\Controllers\MemoController;
 use App\Http\Controllers\SiteController;
@@ -64,6 +65,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     ]);
 
     Route::resource('cap', CapController::class)->only([
+        'index',
+    ]);
+
+    Route::resource('contract', ContractController::class)->only([
         'index',
     ]);
 

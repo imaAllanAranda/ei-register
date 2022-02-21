@@ -426,6 +426,10 @@ return [
         'url' => env('CAP_URL'),
     ],
 
+    'contract' => [
+        'url' => env('CONTRACT_URL'),
+    ],
+
     'vulnerableClients' => [
         'natures' => ['Physical', 'Mental', 'Age', 'Language Barrier', 'Emotional', 'Physical'],
     ],
