@@ -430,6 +430,10 @@ return [
         'url' => env('CONTRACT_URL'),
     ],
 
+    'report' => [
+        'url' => env('REPORT_URL'),
+    ],
+
     'vulnerableClients' => [
         'natures' => ['Physical', 'Mental', 'Age', 'Language Barrier', 'Emotional', 'Physical'],
     ],

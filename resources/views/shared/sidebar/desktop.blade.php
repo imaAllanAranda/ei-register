@@ -66,11 +66,11 @@
 @endif
 
 @if (auth()->user()->hasPermissionTo('contract.review'))
-  <x-jet-nav-link href="{{ route('contract.index') }}"
-      :active="false"
-      icon="heroicon-o-document-report">
-      Contract Review
-    </x-jet-nav-link>
+<x-jet-nav-link href="{{ route('contract.index') }}"
+:active="false"
+icon="heroicon-o-document-report">
+Contract Review
+</x-jet-nav-link>
 @endif
 
 
@@ -122,6 +122,17 @@ icon="heroicon-o-clipboard-list">
 Policies and Procedures
 </x-jet-nav-link>
 @endif
+
+
+
+@if (auth()->user()->hasPermissionTo('report'))
+<x-jet-nav-link href="{{ route('report.index') }}"
+:active="false"
+icon="heroicon-o-document-report">
+Reports
+</x-jet-nav-link>
+@endif
+
 
 
 @if (auth()->user()->hasPermissionTo('software'))

@@ -143,6 +143,12 @@ Policies and procedures
 </x-jet-responsive-nav-link>
 @endif
 
+@if (auth()->user()->hasPermissionTo('report'))
+<x-jet-responsive-nav-link href="{{ route('report.index') }}" icon="heroicon-o-document-report"
+:active="false" target="_blank">
+Reports
+</x-jet-responsive-nav-link>
+@endif
 
 
 @if (auth()->user()->hasPermissionTo('software'))

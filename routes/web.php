@@ -3,7 +3,7 @@
 use App\Http\Controllers\AdviserController;
 use App\Http\Controllers\CirController;
 use App\Http\Controllers\CapController;
-
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\PolicyController;
@@ -71,6 +71,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::resource('contract', ContractController::class)->only([
         'index',
     ]);
+
+    Route::resource('report', ReportController::class)->only([
+        'index',
+    ]);
+
 
     Route::resource('claims', ClaimController::class)->only([
         'index',
