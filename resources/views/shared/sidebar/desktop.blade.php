@@ -65,7 +65,7 @@
 </x-jet-nav-link>
 @endif
 
-@if (auth()->user()->hasPermissionTo('contract.review'))
+@if (auth()->user()->hasPermissionTo('contract'))
 <x-jet-nav-link href="{{ route('contract.index') }}"
 :active="false"
 icon="heroicon-o-document-report">
