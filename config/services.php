@@ -67,6 +67,8 @@ return [
         'ir' => [],  
         'merits' => [],
         'attendance' => [],
+        'cap' => [],
+        'report' => [],
         'policy-and-procedures' => [],
         'vulnerable-clients' => [
             'create' => 'Register',
