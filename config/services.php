@@ -69,6 +69,7 @@ return [
         'attendance' => [],
         'cap' => [],
         'report' => [],
+        'letter' => [],
         'policy-and-procedures' => [],
         'vulnerable-clients' => [
             'create' => 'Register',
@@ -434,6 +435,10 @@ return [
 
     'report' => [
         'url' => env('REPORT_URL'),
+    ],
+
+     'letter' => [
+        'url' => env('LETTER_URL'),
     ],
 
     'vulnerableClients' => [

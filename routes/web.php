@@ -4,6 +4,7 @@ use App\Http\Controllers\AdviserController;
 use App\Http\Controllers\CirController;
 use App\Http\Controllers\CapController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\LetterController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\PolicyController;
@@ -76,6 +77,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         'index',
     ]);
 
+     Route::resource('letter', LetterController::class)->only([
+        'index',
+    ]);
 
     Route::resource('claims', ClaimController::class)->only([
         'index',

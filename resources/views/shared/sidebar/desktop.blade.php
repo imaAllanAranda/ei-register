@@ -103,6 +103,14 @@ Company Memo
 @endif
 
 
+@if (auth()->user()->hasPermissionTo('letter'))
+<x-jet-nav-link href="{{ route('letter.index') }}"
+:active="request()->routeIs('letter.index')"
+icon="heroicon-o-receipt-tax">
+Letter
+</x-jet-nav-link>
+@endif
+
 
 
 
