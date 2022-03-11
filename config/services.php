@@ -63,6 +63,11 @@ return [
             'update' => 'Update',
             'delete' => 'Delete',
         ],
+        'memos' => [
+            'create' => 'Add',
+            'update' => 'Update',
+            'delete' => 'Delete',
+        ],
         'cir' => [],
         'ir' => [],  
         'merits' => [],
