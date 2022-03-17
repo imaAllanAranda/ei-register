@@ -38,6 +38,14 @@
       </x-jet-nav-link>
       @endif
 
+      @if (auth()->user()->hasPermissionTo('annual'))
+      <x-jet-nav-link href="{{ route('annual.index') }}"
+      :active="request()->routeIs('annual.index')"
+      icon="heroicon-o-receipt-tax">
+      Annual Review
+      </x-jet-nav-link>
+      @endif
+
 
       @if (auth()->user()->hasPermissionTo('cap'))
       <x-jet-nav-link href="{{ route('cap.index') }}"

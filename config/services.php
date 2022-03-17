@@ -73,6 +73,7 @@ return [
         'merits' => [],
         'attendance' => [],
         'cap' => [],
+        'annual' => [],
         'report' => [],
         'letter' => [],
         'policy-and-procedures' => [],
@@ -412,6 +413,10 @@ return [
         'status' => [
             'In Progress', 'Continuing', 'Disapproved', 'Approved', 'Partially Approved',
         ],
+    ],
+
+    'annual' => [
+        'url' => env('ANNUAL_URL'),
     ],
 
     'cir' => [

@@ -7,6 +7,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\AnnualReviewController;
 use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\MeritController;
 use App\Http\Controllers\AttendanceController;
@@ -57,6 +58,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         'index',
     ]);
 
+    Route::resource('annual', AnnualReviewController::class)->only([
+        'index',
+    ]);
     Route::resource('merits', MeritController::class)->only([
         'index',
     ]);
